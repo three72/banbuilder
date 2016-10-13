@@ -1,13 +1,13 @@
 {
-    "name": "snipe/banbuilder",
+    "name": "three72/banbuilder",
     "description": "Library to easily handle profanity filtering in PHP projects.",
 	"keywords": ["profanity", "filter", "strings", "swear", "language"],
 	"license": "AGPL-3.0",
     "homepage": "http://banbuilder.com",
 	"authors": [
         {
-            "name": "snipe",
-            "email": "snipe@snipe.net",
+            "name": "Three72",
+            "email": "372digital@gmail.com",
 			"role": "Creator & Developer"
         }
     ],
@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Snipe\\BanBuilder\\": "src/"
+            "three72\\BanBuilder\\": "src/"
         }
     }
 }

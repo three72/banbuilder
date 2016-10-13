@@ -8,23 +8,23 @@ class CensorWords
 
 	/*
 	* When the dictionary is loaded, a ton of regular expression strings are generated
-	* These regular expressions are used to perform the profanity checks. 
+	* These regular expressions are used to perform the profanity checks.
 	* Store them here so when we call censorString we don't need to regenerate them on every call
 	*/
 	private $censorChecks = null;
-	
+
 	public function __construct() {
 		$this->badwords = array();
 		$this->replacer = '*';
 		$this->setDictionary('en-us');
 	}
-	
-	
+
+
 	/**
 	 *  Sets the dictionar(y|ies) to use
-	 *  This can accept a string to a language file path, 
+	 *  This can accept a string to a language file path,
 	 *  or an array of strings to multiple paths
-	 * 
+	 *
 	 *  @param		string/array
 	 *  string
 	 */
@@ -55,7 +55,6 @@ class CensorWords
 	private function readBadWords($dictionary) {
 		$badwords = array();
 		$baseDictPath = __DIR__ . DIRECTORY_SEPARATOR .'dict/';
-
 		if (is_array($dictionary)) {
 			for ($x=0; $x < count($dictionary); $x++) {
 				if (file_exists($baseDictPath.$dictionary[$x].'.php')) {
@@ -63,7 +62,9 @@ class CensorWords
 				} else {
 					// if the file isn't in the dict directory,
 					// it's probably a custom user library
-					include($dictionary[$x]);
+
+					$badwords = $dictionary;
+					break;
 				}
 
 			}
@@ -79,15 +80,15 @@ class CensorWords
 
 		return $badwords;
 	}
-	
+
 	/**
 	 *  Sets the replacement character to use
-	 * 
+	 *
 	 *  @param		string			$replacer        Character to use.
 	 *  string
 	 */
 	public function setReplaceChar($replacer) {
-		$this->replacer = $replacer;			 
+		$this->replacer = $replacer;
 	}
 
 
@@ -103,16 +104,16 @@ class CensorWords
 			substr($chars, 0, ($len%strlen($chars))));
 
 	}
-	
+
 	/**
 	* Generates the regular expressions that are going to be used to check for profanity
 	* @param		boolean			$fullWords		Option to generate regular expressions used for full words instead. Default is false
 	* void
 	*/
 	private function generateCensorChecks($fullWords = false) {
-	
+
 		$badwords = $this->badwords;
-		
+
 		// generate censor checks as soon as we load the dictionary
 		// utilize leet equivalents as well
 		$leet_replace = array();
@@ -145,12 +146,12 @@ class CensorWords
 
 		$censorChecks = array();
 		for ($x=0; $x<count($badwords); $x++) {
-			$censorChecks[$x] =  $fullWords ? '/\b'.str_ireplace(array_keys($leet_replace),array_values($leet_replace), $badwords[$x]).'\b/i' 
+			$censorChecks[$x] =  $fullWords ? '/\b'.str_ireplace(array_keys($leet_replace),array_values($leet_replace), $badwords[$x]).'\b/i'
 											: '/'.str_ireplace(array_keys($leet_replace),array_values($leet_replace), $badwords[$x]).'/i';
 		}
-		
+
 		$this->censorChecks = $censorChecks;
-			
+
 	}
 
 	/**
@@ -160,11 +161,11 @@ class CensorWords
 	 *  string[string]
 	 */
 	public function censorString($string, $fullWords = false) {
-			
+
 			// generate our censor checks if they are not defined yet
 			if(!$this->censorChecks)
 				$this->generateCensorChecks($fullWords);
-			
+
 			$anThis = &$this;
 			$counter=0;
 			$match = array();

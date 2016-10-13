@@ -9,7 +9,7 @@ Installing
 -------
 To install BanBuilder, simply include it in your projects's `composer.json`. 
 
-	"snipe/banbuilder": "dev-master",
+	"three72/banbuilder": "dev-master",
 
 There are no additional dependencies required for this package to work.
 
